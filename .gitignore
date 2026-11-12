@@ -1,0 +1,30 @@
+# Secrets: never commit. Copy .env.example to .env locally.
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Runtime data (local database and everything customers upload)
+claims.db
+*.db
+uploads/*
+!uploads/.gitkeep
+
+# Temporary files from local testing
+_*.log
+_*.json
+_*.txt
+_*.py
+_*.png
+_shot_profile/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

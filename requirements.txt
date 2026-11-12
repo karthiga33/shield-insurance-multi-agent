@@ -1,0 +1,23 @@
+# Core agent / LLM stack
+langgraph>=0.2.0
+boto3>=1.35.0          # AWS Bedrock (default LLM provider)
+openai>=1.40.0         # optional: only if LLM_PROVIDER=openai
+python-dotenv>=1.0.0
+
+# Document analysis
+pypdf>=4.2.0           # extract text from text-based PDFs
+pypdfium2>=4.30.0      # render scanned PDF pages to images (no external binary)
+pdf2image>=1.17.0      # optional fallback; only works if Poppler is installed
+pillow>=10.0.0         # image handling
+pytesseract>=0.3.10    # OCR fallback for scanned docs (needs Tesseract binary)
+
+# Backend API + frontend serving
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+python-multipart>=0.0.9   # file uploads
+
+# Policy document
+reportlab>=4.0.0        # generate the policy document PDF
+
+# Used by local test scripts only
+requests>=2.31.0

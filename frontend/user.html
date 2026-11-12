@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shield Insurance — Get covered, claim fast, track anytime</title>
+  <meta name="description" content="Apply for auto, home, health and life insurance, file claims online and track them in real time." />
+  <style>
+    :root {
+      --navy:#0b2559; --navy-2:#123a82; --blue:#1d4ed8; --blue-soft:#eaf1ff; --sky:#38bdf8;
+      --gold:#f5b301; --green:#15803d; --red:#c62828; --amber:#b45309;
+      --bg:#f4f7fc; --card:#ffffff; --line:#dfe6f1; --text:#0f1b33; --muted:#5b6b86;
+      --radius:14px; --shadow:0 1px 2px rgba(15,27,51,.06), 0 8px 24px rgba(15,27,51,.06);
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:"Segoe UI",Inter,system-ui,-apple-system,Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.5; }
+    a { color:var(--blue); }
+    :focus-visible { outline:3px solid var(--sky); outline-offset:2px; }
+
+    /* ---- Top navigation ---- */
+    .topbar { background:var(--navy); color:#c9d6f0; font-size:12.5px; }
+    .topbar .wrap { display:flex; justify-content:space-between; gap:16px; padding:7px 24px; }
+    .topbar b { color:#fff; font-weight:600; }
+    .nav { position:sticky; top:0; z-index:20; background:#fff; border-bottom:1px solid var(--line); box-shadow:0 2px 10px rgba(15,27,51,.05); }
+    .nav .wrap { display:flex; align-items:center; gap:24px; padding:12px 24px; }
+    .brand { display:flex; align-items:center; gap:10px; font-weight:800; font-size:20px; color:var(--navy); letter-spacing:-.01em; white-space:nowrap; cursor:pointer; background:none; border:none; padding:0; font-family:inherit; }
+    .brand small { display:block; font-size:11px; font-weight:600; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; }
+    .brand svg { flex:0 0 auto; }
+    .tabs { display:flex; gap:4px; flex:1; overflow-x:auto; scrollbar-width:none; }
+    .tabs::-webkit-scrollbar { display:none; }
+    .tab { background:none; border:none; padding:9px 14px; border-radius:9px; font-family:inherit; font-size:14.5px; font-weight:600; line-height:1.2; color:#33415c; cursor:pointer; white-space:nowrap; }
+    .tab:hover { background:var(--blue-soft); color:var(--blue); }
+    .tab.active { background:var(--blue-soft); color:var(--blue); }
+    .wrap { max-width:1180px; margin:0 auto; }
+
+    /* ---- Hero ---- */
+    .hero { background:radial-gradient(1200px 400px at 85% -10%, rgba(56,189,248,.35), transparent 60%),
+                        linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 60%, #1e4fae 100%);
+            color:#fff; }
+    .hero .wrap { display:grid; grid-template-columns:1.25fr 1fr; gap:40px; align-items:center; padding:56px 24px 96px; }
+    .eyebrow { display:inline-block; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25); color:#e6eeff; padding:5px 12px; border-radius:999px; font-size:12.5px; font-weight:600; letter-spacing:.02em; }
+    .hero h1 { font-size:44px; line-height:1.1; margin:16px 0 14px; letter-spacing:-.02em; }
+    .hero h1 span { color:var(--gold); }
+    .hero p.lede { font-size:17px; color:#d6e2fb; max-width:560px; margin:0 0 26px; }
+    .cta { display:flex; gap:12px; flex-wrap:wrap; }
+    .btn { display:inline-flex; align-items:center; gap:8px; border:none; border-radius:10px; padding:13px 22px; font-family:inherit; font-size:15px; font-weight:700; cursor:pointer; text-decoration:none; transition:transform .08s ease, box-shadow .2s ease; }
+    .btn:active { transform:translateY(1px); }
+    .btn-gold { background:var(--gold); color:#1b1400; box-shadow:0 6px 18px rgba(245,179,1,.35); }
+    .btn-ghost { background:rgba(255,255,255,.1); color:#fff; border:1px solid rgba(255,255,255,.35); }
+    .trust { display:flex; gap:28px; margin-top:30px; flex-wrap:wrap; }
+    .trust div { font-size:13px; color:#c9d6f0; }
+    .trust b { display:block; font-size:22px; color:#fff; }
+    .hero-card { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18); border-radius:18px; padding:22px; backdrop-filter:blur(4px); }
+    .hero-card h3 { margin:0 0 14px; font-size:16px; }
+    .steps { list-style:none; margin:0; padding:0; display:grid; gap:12px; }
+    .steps li { display:flex; gap:12px; align-items:flex-start; font-size:14px; color:#e3ebff; }
+    .steps li span { flex:0 0 28px; height:28px; border-radius:50%; background:var(--gold); color:#1b1400; display:grid; place-items:center; font-weight:800; font-size:13px; }
+
+    /* ---- Product cards (overlap the hero) ---- */
+    .products { margin-top:-64px; position:relative; z-index:2; }
+    .products .wrap { display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; padding:0 24px; }
+    .product { background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow); text-align:left; cursor:pointer; font-family:inherit; color:inherit; transition:transform .12s ease, box-shadow .2s ease, border-color .2s; }
+    .product:hover { transform:translateY(-3px); border-color:#b9cdf5; box-shadow:0 12px 30px rgba(29,78,216,.14); }
+    .product .ic { width:44px; height:44px; border-radius:12px; display:grid; place-items:center; background:var(--blue-soft); color:var(--blue); margin-bottom:12px; }
+    .product h3 { margin:0 0 4px; font-size:16px; }
+    .product p { margin:0 0 10px; font-size:13px; color:var(--muted); }
+    .product .go { font-size:13px; font-weight:700; color:var(--blue); }
+
+    /* ---- Page content ---- */
+    main { max-width:980px; margin:0 auto; padding:32px 24px 56px; }
+    .panel { background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:28px 32px; box-shadow:var(--shadow); }
+    .section-head { margin:0 0 22px; padding-bottom:18px; border-bottom:1px solid var(--line); }
+    .section-head h2 { margin:0 0 4px; font-size:24px; letter-spacing:-.01em; color:var(--navy); }
+    .section-head p { margin:0; color:var(--muted); font-size:14.5px; }
+    .hidden { display:none !important; }
+    label { display:block; font-size:13px; font-weight:600; color:#2b3a55; margin:14px 0 6px; }
+    input,select,textarea { width:100%; padding:11px 13px; border:1px solid #cdd7e6; border-radius:10px; font-size:14.5px; font-family:inherit; background:#fff; color:var(--text); transition:border-color .15s, box-shadow .15s; }
+    input:focus,select:focus,textarea:focus { outline:none; border-color:var(--blue); box-shadow:0 0 0 4px rgba(29,78,216,.12); }
+    input[type=file] { padding:9px; background:#f8fbff; border-style:dashed; cursor:pointer; }
+    textarea { resize:vertical; min-height:80px; }
+    .row { display:flex; gap:18px; } .row>div { flex:1; min-width:0; }
+    button.primary { margin-top:22px; background:linear-gradient(180deg, #2563eb, var(--blue)); color:#fff; border:none; padding:13px 24px; border-radius:10px; font-size:15px; font-weight:700; font-family:inherit; cursor:pointer; box-shadow:0 6px 16px rgba(29,78,216,.25); }
+    button.primary:hover { filter:brightness(1.05); }
+    button.primary:disabled { opacity:.6; cursor:default; box-shadow:none; }
+    .docnote { margin-top:10px; font-size:13.5px; padding:11px 14px; border-radius:10px; background:var(--blue-soft); border:1px solid #c7d8fb; color:#1e3a8a; }
+    .docnote.none { background:#f6f8fc; border-color:var(--line); color:var(--muted); }
+    .result { margin-top:20px; padding:18px; border-radius:12px; font-size:14.5px; }
+    .result.ok { background:#ecfdf3; border:1px solid #a7e3c0; } .result.bad { background:#fef2f2; border:1px solid #f5c2c2; }
+    .track-box { display:flex; gap:10px; } .track-box input { flex:1; }
+    .claim-card { border:1px solid var(--line); border-radius:12px; padding:18px; margin-bottom:14px; background:#fff; }
+    .claim-head { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+    .badge { font-size:12px; font-weight:700; padding:4px 11px; border-radius:999px; text-transform:capitalize; }
+    .b-pending { background:#fff4d6; color:var(--amber); } .b-approved { background:#dcf5e6; color:var(--green); }
+    .b-rejected { background:#fde3e3; color:var(--red); } .b-draft { background:#e3ebff; color:var(--blue); }
+    .kv { display:grid; grid-template-columns:150px 1fr; gap:6px 14px; font-size:13.5px; margin-top:12px; }
+    .kv dt { color:var(--muted); } .kv dd { margin:0; }
+    .muted { color:var(--muted); font-size:13.5px; }
+    .tref { font-family:ui-monospace,Consolas,monospace; font-size:16px; font-weight:700; color:var(--navy); }
+    code { background:#f1f5f9; padding:1px 6px; border-radius:5px; }
+    .chatlog { border:1px solid var(--line); border-radius:12px; padding:14px; height:340px; overflow-y:auto; background:#f7f9fd; margin:6px 0 12px; }
+    .msg { max-width:80%; margin:8px 0; padding:10px 14px; border-radius:14px; font-size:14.5px; white-space:pre-wrap; }
+    .msg.user { background:var(--blue); color:#fff; margin-left:auto; border-bottom-right-radius:4px; }
+    .msg.bot { background:#fff; border:1px solid var(--line); border-bottom-left-radius:4px; box-shadow:0 1px 2px rgba(15,27,51,.04); }
+    .verdict-yes { color:var(--green); font-weight:700; } .verdict-no { color:var(--red); font-weight:700; }
+    h3.step { display:flex; align-items:center; gap:10px; font-size:16px; margin:30px 0 2px; color:var(--navy); }
+    h3.step:first-child { margin-top:0; }
+    h3.step::before { content:counter(step); counter-increment:step; width:28px; height:28px; border-radius:50%; background:var(--blue); color:#fff; display:grid; place-items:center; font-size:13px; }
+    #applyForm { counter-reset:step; }
+    .policyno { font-family:ui-monospace,Consolas,monospace; font-size:18px; font-weight:700; color:var(--green); }
+    .quote { margin-top:20px; border:1px solid #c7d8fb; background:linear-gradient(180deg,#f3f7ff,#eaf1ff); border-radius:12px; padding:18px; }
+    .quote h4 { margin:0 0 8px; color:var(--navy); }
+    .quote .big { font-size:26px; font-weight:800; color:var(--navy); }
+    .quote table { width:100%; border-collapse:collapse; margin-top:10px; font-size:13px; background:#fff; }
+    .quote th, .quote td { border:1px solid #d3def3; padding:6px 9px; text-align:right; }
+    .quote th { background:#dfe9fd; color:var(--navy); }
+    .quote ul { margin:8px 0 0; padding-left:18px; font-size:13.5px; }
+    .dl-btn { display:inline-block; margin-top:12px; background:var(--green); color:#fff; padding:11px 18px; border-radius:10px; text-decoration:none; font-weight:700; font-size:14px; }
+
+    /* ---- Footer ---- */
+    footer { background:#081a40; color:#a9b8d6; margin-top:24px; }
+    footer .wrap { display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:28px; padding:44px 24px 24px; }
+    footer h4 { color:#fff; margin:0 0 12px; font-size:14px; }
+    footer ul { list-style:none; margin:0; padding:0; display:grid; gap:8px; font-size:13.5px; }
+    footer button.link { background:none; border:none; padding:0; color:#a9b8d6; font:inherit; cursor:pointer; text-align:left; }
+    footer button.link:hover { color:#fff; }
+    footer .legal { border-top:1px solid #1d3263; }
+    footer .legal .wrap { display:block; padding:16px 24px; font-size:12px; color:#7f91b5; }
+
+    /* ---- Small screens ---- */
+    @media (max-width:860px) {
+      .hero .wrap { grid-template-columns:1fr; padding:40px 20px 88px; }
+      .hero h1 { font-size:34px; }
+      .products .wrap { grid-template-columns:repeat(2, 1fr); padding:0 20px; }
+      footer .wrap { grid-template-columns:1fr 1fr; }
+      .topbar .wrap span:last-child { display:none; }
+    }
+    @media (max-width:640px) {
+      .row { flex-direction:column; gap:0; }
+      .panel { padding:22px 18px; }
+      main { padding:24px 14px 40px; }
+      .kv { grid-template-columns:1fr; gap:0 0; } .kv dd { margin-bottom:8px; }
+      .track-box { flex-direction:column; }
+      .nav .wrap { flex-wrap:wrap; gap:8px; padding:10px 14px; }
+      .tabs { flex:1 1 100%; }   /* own row under the logo, swipe sideways */
+      .products .wrap { grid-template-columns:1fr; }
+      footer .wrap { grid-template-columns:1fr; }
+    }
+
+    /* ---- Admin tab (scoped to #admin so it never affects customer screens) ---- */
+    .tab-admin { border:1px solid #c9d4e6; color:var(--navy); }
+    .tab-admin.active, .tab-admin:hover { background:var(--navy); color:#fff; border-color:var(--navy); }
+    main.wide { max-width:1180px; }
+    #admin .admin-login { max-width:360px; }
+    #admin .err { color:var(--red); font-size:13px; margin-top:8px; }
+    #admin .bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:16px; }
+    #admin .bar select { width:auto; }
+    #admin button.ghost { background:#e2e8f0; color:#334155; border:none; padding:8px 14px; border-radius:7px; font-size:13px; font-weight:600; cursor:pointer; }
+    #admin .pill { background:#e2e8f0; color:#334155; border-radius:999px; padding:2px 10px; font-size:12px; }
+    #admin .kv { grid-template-columns:170px 1fr; }
+    #admin .section-title { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin:14px 0 4px; }
+    #admin .box { background:#f8fafc; border:1px solid var(--line); border-radius:8px; padding:10px; font-size:13px; }
+    #admin .trail { white-space:pre-wrap; font-family:ui-monospace,monospace; font-size:12px; }
+    #admin .risk-low, #admin .cov-yes, #admin .ok { color:var(--green); font-weight:700; }
+    #admin .risk-medium, #admin .warn { color:var(--amber); font-weight:700; }
+    #admin .risk-high, #admin .cov-no, #admin .bad { color:var(--red); font-weight:700; }
+    #admin .chk { display:grid; grid-template-columns:22px 1fr; gap:2px 6px; font-size:13px; }
+    #admin .actions { margin-top:12px; display:flex; gap:8px; align-items:center; }
+    #admin .actions input { flex:1; }
+    #admin .actions button { color:#fff; border:none; padding:9px 16px; border-radius:7px; font-weight:600; cursor:pointer; }
+    #admin button.approve { background:var(--green); } #admin button.reject { background:var(--red); }
+    #admin .docs { display:flex; flex-wrap:wrap; gap:12px; }
+    #admin .doc-slot { border:1px solid var(--line); border-radius:8px; padding:8px; background:#f8fafc; font-size:12px; color:var(--muted); max-width:260px; }
+    #admin .doc-slot img { display:block; max-width:240px; max-height:180px; border-radius:6px; cursor:zoom-in; margin-bottom:6px; }
+    #admin .doc-slot a { font-size:13px; font-weight:600; color:var(--blue); }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="wrap">
+      <span>Claims helpline <b>1800-000-1234</b> &middot; Available 24/7</span>
+      <span>Every decision reviewed by a licensed claims specialist</span>
+    </div>
+  </div>
+
+  <header class="nav">
+    <div class="wrap">
+      <button type="button" class="brand" onclick="showTab('apply')" aria-label="Shield Insurance home">
+        <svg width="34" height="38" viewBox="0 0 34 38" aria-hidden="true">
+          <path d="M17 1 2 7v10c0 9.4 6.4 17.4 15 20 8.6-2.6 15-10.6 15-20V7L17 1Z" fill="#1d4ed8"/>
+          <path d="M17 5.5 6 9.9V17c0 7 4.6 13 11 15.2V5.5Z" fill="#0b2559"/>
+          <path d="m11 18.5 4.2 4.2L23.5 14" fill="none" stroke="#f5b301" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Shield Insurance<small>Protect what matters</small></span>
+      </button>
+      <nav class="tabs" aria-label="Main">
+        <button class="tab active" data-tab="apply">Get Insured</button>
+        <button class="tab" data-tab="file">File a Claim</button>
+        <button class="tab" data-tab="chat">Coverage Assistant</button>
+        <button class="tab" data-tab="track">Track Status</button>
+        <button class="tab tab-admin" data-tab="admin">Admin</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero + product cards: shown on the home (Get Insured) screen only -->
+  <section id="hero" class="hero" aria-labelledby="heroTitle">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Auto &middot; Home &middot; Health &middot; Life</span>
+        <h1 id="heroTitle">Insurance that moves <span>as fast as you do</span></h1>
+        <p class="lede">Get a quote in minutes, upload your documents online and track every application and claim in one place. Our AI checks your request instantly, and a specialist makes the final call.</p>
+        <div class="cta">
+          <button type="button" class="btn btn-gold" onclick="goToForm()">Get a quote</button>
+          <button type="button" class="btn btn-ghost" onclick="showTab('file')">File a claim</button>
+        </div>
+        <div class="trust">
+          <div><b>&lt; 1 min</b>automated review</div>
+          <div><b>24/7</b>online claims</div>
+          <div><b>100%</b>human-approved</div>
+        </div>
+      </div>
+      <div class="hero-card">
+        <h3>How it works</h3>
+        <ol class="steps">
+          <li><span>1</span><div><b>Apply online</b><br />Pick a plan, see your premium live and upload your documents.</div></li>
+          <li><span>2</span><div><b>Instant checks</b><br />We verify your documents and eligibility automatically.</div></li>
+          <li><span>3</span><div><b>Get your policy</b><br />Once approved, download your policy document right away.</div></li>
+          <li><span>4</span><div><b>Claim anytime</b><br />File a claim with your policy number and track it live.</div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section id="productCards" class="products" aria-label="Insurance products">
+    <div class="wrap">
+      <button type="button" class="product" onclick="pickProduct('auto')">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 17h14M3 13l2-6h14l2 6v4H3v-4Z"/><circle cx="7.5" cy="17" r="1.8"/><circle cx="16.5" cy="17" r="1.8"/></svg></div>
+        <h3>Auto insurance</h3><p>Collision, theft, vandalism and fire cover for your vehicle.</p><span class="go">Get a quote &rarr;</span>
+      </button>
+      <button type="button" class="product" onclick="pickProduct('home')">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></div>
+        <h3>Home insurance</h3><p>Fire, theft, water and storm damage to your home.</p><span class="go">Get a quote &rarr;</span>
+      </button>
+      <button type="button" class="product" onclick="pickProduct('health')">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-4.4-9.3-9A5.2 5.2 0 0 1 12 6.3 5.2 5.2 0 0 1 21.3 12C19 16.6 12 21 12 21Z"/><path d="M12 10v5M9.5 12.5h5"/></svg></div>
+        <h3>Health insurance</h3><p>Hospitalization, surgery and emergency treatment.</p><span class="go">Get a quote &rarr;</span>
+      </button>
+      <button type="button" class="product" onclick="pickProduct('life')">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.4 8.6 8 10 4.6-1.4 8-5 8-10V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <h3>Life insurance</h3><p>Savings plan that pays at maturity or protects your family.</p><span class="go">Get a quote &rarr;</span>
+      </button>
+    </div>
+  </section>
+
+  <main>
+    <!-- APPLY FOR INSURANCE -->
+    <section id="apply" class="panel">
+      <div class="section-head">
+        <h2>Apply for insurance</h2>
+        <p>Takes about 5 minutes. Your quote updates as you fill in the form, and you can download your policy as soon as it is approved.</p>
+      </div>
+      <form id="applyForm">
+        <h3 class="step">Your details</h3>
+        <div class="row">
+          <div><label for="aName">Full name (as on your ID)</label><input id="aName" name="full_name" required autocomplete="name" /></div>
+          <div><label for="aEmail">Email</label><input id="aEmail" type="email" name="email" required autocomplete="email" /></div>
+        </div>
+        <div class="row">
+          <div><label for="aPhone">Phone</label><input id="aPhone" type="tel" name="phone" required autocomplete="tel" /></div>
+          <div><label for="aDob">Date of birth</label><input id="aDob" type="date" name="date_of_birth" required /></div>
+        </div>
+        <label for="aAddress">Address</label>
+        <input id="aAddress" name="address" required autocomplete="street-address" />
+
+        <h3 class="step">Choose your insurance</h3>
+        <div class="row">
+          <div>
+            <label for="aType">Policy type</label>
+            <select id="aType" name="policy_type" required></select>
+          </div>
+          <div>
+            <label for="aCoverage" id="aCoverageLabel">Coverage amount ($)</label>
+            <input id="aCoverage" type="number" name="coverage_amount" step="1" required />
+          </div>
+        </div>
+        <div id="aTypeNote" class="docnote none"></div>
+        <div class="row">
+          <div>
+            <label for="aTerm">Policy term (years)</label>
+            <select id="aTerm" name="term_years" required></select>
+          </div>
+          <div>
+            <label for="aFreq">Payment frequency</label>
+            <select id="aFreq" name="payment_frequency" required></select>
+          </div>
+        </div>
+        <div id="aFields"></div>
+        <div id="aQuote" class="quote hidden"></div>
+
+        <h3 class="step">Upload documents</h3>
+        <p class="muted">Upload a clear photo, scan or PDF of each document. Our system reads them and checks they match your details.</p>
+        <div id="aDocs"></div>
+
+        <button class="primary" type="submit">Submit application</button>
+      </form>
+      <div id="applyResult"></div>
+    </section>
+
+    <!-- FILE A CLAIM -->
+    <section id="file" class="panel hidden">
+      <div class="section-head">
+        <h2>File a claim</h2>
+        <p>Use your policy number and the email registered on it. We check your claim against your policy straight away and tell you which document we need.</p>
+      </div>
+      <form id="claimForm">
+        <div class="row">
+          <div><label for="fName">Your name</label><input id="fName" name="claimant_name" required placeholder="Jane Smith" autocomplete="name" /></div>
+          <div><label for="fEmail">Registered email</label><input id="fEmail" type="email" name="email" required placeholder="the email on your policy" autocomplete="email" /></div>
+        </div>
+        <div class="row">
+          <div><label>Policy number</label><input name="policy_number" required placeholder="POL000004" /></div>
+          <div><label>Incident date</label><input type="date" name="incident_date" required /></div>
+        </div>
+        <div class="row">
+          <div>
+            <label>Incident type</label>
+            <select name="incident_type" id="incidentType" required></select>
+          </div>
+          <div><label>Claimed amount ($)</label><input type="number" name="claimed_amount" step="0.01" required placeholder="3200" /></div>
+        </div>
+        <label>Description</label>
+        <textarea name="description" placeholder="Describe what happened..."></textarea>
+
+        <div id="policyHint" class="docnote none" style="margin-top:10px">Enter your policy number and registered email to see the incident types your policy covers.</div>
+        <div id="docNote" class="docnote none">Select an incident type to see what document is required.</div>
+        <label id="docLabel">Supporting document</label>
+        <input type="file" id="docInput" name="document" accept=".pdf,.png,.jpg,.jpeg,.webp,.tiff,.bmp" />
+
+        <button class="primary" type="submit">Submit claim</button>
+      </form>
+      <div id="submitResult"></div>
+    </section>
+
+    <!-- COVERAGE CHAT -->
+    <section id="chat" class="panel hidden">
+      <div class="section-head">
+        <h2>Coverage assistant</h2>
+        <p>Not sure if something is covered? Ask in plain words. Answers come only from your own policy terms.</p>
+      </div>
+      <div class="row">
+        <div><label for="chatPol">Policy number</label><input id="chatPol" placeholder="POL000004" /></div>
+        <div><label for="chatEmail">Registered email</label><input id="chatEmail" type="email" placeholder="the email on your policy" autocomplete="email" /></div>
+      </div>
+      <p class="muted">Describe what happened and I will check it against your own policy.</p>
+      <div id="chatLog" class="chatlog" aria-live="polite"></div>
+      <div class="track-box">
+        <input id="chatInput" placeholder="e.g. My car was stolen last night" aria-label="Your message" />
+        <button class="primary" style="margin-top:0" onclick="sendChat()">Send</button>
+      </div>
+      <div id="chatAction" style="margin-top:12px"></div>
+    </section>
+
+    <!-- TRACK -->
+    <section id="track" class="panel hidden">
+      <div class="section-head">
+        <h2>Track your application or claim</h2>
+        <p>See where your request is, your policy details and your documents. All you need is your registered email.</p>
+      </div>
+      <label for="trackEmail">Registered email</label>
+      <input id="trackEmail" type="email" placeholder="the email on your policy" autocomplete="email" />
+      <label for="trackId" style="margin-top:20px">Track a claim or an application by its ID</label>
+      <div class="track-box">
+        <input id="trackId" placeholder="TRK-XXXXXX (claim) or APL-XXXXXX (application)" />
+        <button class="primary" style="margin-top:0" onclick="trackOne()">Track</button>
+      </div>
+      <label for="trackPol" style="margin-top:20px">Or see all your claims by policy number</label>
+      <div class="track-box">
+        <input id="trackPol" placeholder="POL000004" />
+        <button class="primary" style="margin-top:0" onclick="trackCustomer()">Show my claims</button>
+      </div>
+      <div id="trackResult" style="margin-top:18px"></div>
+    </section>
+
+    <!-- ADMIN (passcode sign-in, then review applications and claims) -->
+    <section id="admin" class="panel hidden">
+      <div class="section-head">
+        <h2>Claims &amp; underwriting desk</h2>
+        <p>For Shield Insurance staff. Review the agent's findings and documents, then approve or reject.</p>
+      </div>
+      <div id="adminLogin" class="admin-login">
+        <h3 style="margin-top:0">Staff sign in</h3>
+        <label for="adminToken">Admin passcode</label>
+        <input id="adminToken" type="password" placeholder="passcode" autocomplete="current-password" />
+        <button class="primary" type="button" onclick="adminSignIn()">Sign in</button>
+        <div id="adminErr" class="err" role="alert"></div>
+      </div>
+
+      <div id="adminConsole" class="hidden">
+        <div class="bar">
+          <label class="muted" for="adminView">Show:</label>
+          <select id="adminView" onchange="adminLoad()">
+            <option value="applications">New applications</option>
+            <option value="claims">Claims</option>
+          </select>
+          <label class="muted" for="adminFilter">Status:</label>
+          <select id="adminFilter" onchange="adminLoad()">
+            <option value="pending_approval">Pending approval</option>
+            <option value="">All</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected (by human)</option>
+            <option value="rejected_auto">Auto-rejected</option>
+          </select>
+          <button type="button" class="ghost" onclick="adminLoad()">Refresh</button>
+          <span id="adminCount" class="pill"></span>
+          <button type="button" class="ghost" style="margin-left:auto" onclick="adminSignOut()">Sign out</button>
+        </div>
+        <div id="adminList"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div>
+        <h4>Shield Insurance</h4>
+        <p style="margin:0;font-size:13.5px;max-width:320px">Simple, fast insurance for the things that matter. Apply, claim and track online, with a real person behind every decision.</p>
+      </div>
+      <div>
+        <h4>Insurance</h4>
+        <ul>
+          <li><button type="button" class="link" onclick="pickProduct('auto')">Auto</button></li>
+          <li><button type="button" class="link" onclick="pickProduct('home')">Home</button></li>
+          <li><button type="button" class="link" onclick="pickProduct('health')">Health</button></li>
+          <li><button type="button" class="link" onclick="pickProduct('life')">Life</button></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Claims</h4>
+        <ul>
+          <li><button type="button" class="link" onclick="showTab('file')">File a claim</button></li>
+          <li><button type="button" class="link" onclick="showTab('track')">Track status</button></li>
+          <li><button type="button" class="link" onclick="showTab('chat')">Coverage assistant</button></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>1800-000-1234 (24/7)</li>
+          <li>support@shield-insurance.example</li>
+          <li><button type="button" class="link" onclick="showTab('admin')">Staff sign in</button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <div class="wrap">&copy; 2026 Shield Insurance (demo). This is a demonstration system, not a real insurer. Premiums and benefits shown are illustrative sample rates.</div>
+    </div>
+  </footer>
+
+  <script>
+    let REQS = {};
+
+    // Tabs
+    const TABS = ['apply', 'file', 'chat', 'track', 'admin'];
+    function showTab(name) {
+      // Keep the address bookmarkable (e.g. /#/track) without adding history noise.
+      history.replaceState(null, '', name === 'apply' ? location.pathname : '#/' + name);
+      document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.tab === name));
+      TABS.forEach(id =>
+        document.getElementById(id).classList.toggle('hidden', id !== name));
+      // The review cards need more room than the customer forms.
+      document.querySelector('main').classList.toggle('wide', name === 'admin');
+      // The marketing banner and product cards belong on the home screen only.
+      const home = name === 'apply';
+      document.getElementById('hero').classList.toggle('hidden', !home);
+      document.getElementById('productCards').classList.toggle('hidden', !home);
+      if (!home && window.scrollY > 0) window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (name === 'admin' && !ADMIN_TOKEN) document.getElementById('adminToken').focus();
+    }
+
+    // Hero "Get a quote" and the product cards jump straight into the form.
+    function goToForm() {
+      showTab('apply');
+      document.getElementById('apply').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    function pickProduct(type) {
+      showTab('apply');
+      const sel = document.getElementById('aType');
+      if ([...sel.options].some(o => o.value === type)) {
+        sel.value = type;
+        renderProduct();
+      }
+      document.getElementById('aType').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    document.querySelectorAll('.tab').forEach(t => t.onclick = () => showTab(t.dataset.tab));
+
+    // Load incident requirements -> build dropdown + dynamic doc prompt
+    async function loadReqs(onlyTypes) {
+      if (!Object.keys(REQS).length) {
+        const r = await fetch('/api/incident-requirements');
+        REQS = (await r.json()).requirements;
+      }
+      const sel = document.getElementById('incidentType');
+      const keep = sel.value;
+      const keys = onlyTypes && onlyTypes.length ? onlyTypes : Object.keys(REQS);
+      sel.innerHTML = keys.map(k => `<option value="${k}">${k.replace(/_/g, ' ')}</option>`).join('');
+      if (keys.includes(keep)) sel.value = keep;
+      updateDocNote();
+    }
+
+    // Escape text before putting it into HTML, so claim text can never inject markup.
+    function esc(v) {
+      return String(v ?? '').replace(/[&<>"']/g, c =>
+        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    // Once policy number + registered email are filled in, show only the
+    // incident types that apply to that policy.
+    async function filterByPolicy() {
+      const f = document.getElementById('claimForm');
+      const email = f.email.value.trim(), pol = f.policy_number.value.trim();
+      const hint = document.getElementById('policyHint');
+      if (!email || !pol) return;
+      const res = await fetch(`/api/policy-info?policy_number=${encodeURIComponent(pol)}&email=${encodeURIComponent(email)}`);
+      if (!res.ok) { hint.textContent = 'We could not find a policy with that policy number and email.'; hint.className = 'docnote'; return; }
+      const info = await res.json();
+      hint.textContent = `Your ${info.policy_type} policy (${info.status}). Showing incident types that apply to it.`;
+      hint.className = 'docnote none';
+      loadReqs(info.incident_types);
+    }
+    function updateDocNote() {
+      const t = document.getElementById('incidentType').value;
+      const req = REQS[t] || {};
+      const note = document.getElementById('docNote');
+      const input = document.getElementById('docInput');
+      const label = document.getElementById('docLabel');
+      if (req.covered === false) {
+        note.className = 'docnote none';
+        note.textContent = `Note: '${t}' is typically NOT covered under our policies. You may still submit, but it is likely to be declined.`;
+        label.textContent = 'Supporting document (optional)';
+        input.required = false;
+      } else if (req.document_required) {
+        note.className = 'docnote';
+        note.textContent = `Required for '${t}': ${req.document_label}`;
+        label.textContent = 'Supporting document (required)';
+        input.required = true;
+      } else {
+        note.className = 'docnote none';
+        note.textContent = `No document is required for '${t}'. You may attach one if you wish.`;
+        label.textContent = 'Supporting document (optional)';
+        input.required = false;
+      }
+    }
+    document.getElementById('incidentType').addEventListener('change', updateDocNote);
+
+    // Submit
+    document.getElementById('claimForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const btn = form.querySelector('button');
+      btn.disabled = true; btn.textContent = 'Submitting...';
+      const box = document.getElementById('submitResult'); box.className = ''; box.innerHTML = '';
+      try {
+        const res = await fetch('/api/claims', { method: 'POST', body: new FormData(form) });
+        const data = await res.json();
+        if (!res.ok) { throw new Error(data.detail || 'Submission failed'); }
+        box.className = 'result ok';
+        box.innerHTML = `Your claim was submitted.<br><br>Your tracking ID is <span class="tref">${esc(data.tracking_id)}</span><br>
+          <span class="muted">Save this ID. You can track the claim with it and your registered email.<br>
+          Your customer ID is ${esc(data.customer_id)} (for reference when contacting us).<br>
+          Current status: <b>${esc(data.status)}</b></span>`;
+        form.reset(); updateDocNote();
+      } catch (err) {
+        box.className = 'result bad'; box.textContent = String(err).replace('Error: ', '');
+      } finally { btn.disabled = false; btn.textContent = 'Submit claim'; }
+    };
+
+    function badge(s) {
+      const m = { pending_approval:'b-pending', approved:'b-approved', rejected:'b-rejected', rejected_auto:'b-rejected', draft:'b-draft' };
+      return `<span class="badge ${m[s]||''}">${esc(s)}</span>`;
+    }
+    // Dollar amounts always use US grouping (100,000), whatever the browser locale.
+    const fmt = n => Number(n).toLocaleString('en-US', { maximumFractionDigits: 2 });
+    function money(v){ return v==null ? '-' : '$' + fmt(v); }
+
+    function card(c) {
+      return `<div class="claim-card">
+        <div class="claim-head"><span class="tref">${esc(c.tracking_id)}</span> ${badge(c.status)}</div>
+        <p style="margin:10px 0 0">${esc(c.message)}</p>
+        <dl class="kv">
+          <dt>Incident</dt><dd>${esc(c.incident_type)} on ${esc(c.incident_date)}</dd>
+          <dt>Claimed</dt><dd>${money(c.claimed_amount)}</dd>
+          ${c.assessed_amount!=null ? `<dt>Assessed payout</dt><dd><b>${money(c.assessed_amount)}</b></dd>`:''}
+          ${c.reason ? `<dt>Note</dt><dd>${esc(c.reason)}</dd>`:''}
+        </dl></div>`;
+    }
+
+    function trackEmail() {
+      const email = document.getElementById('trackEmail').value.trim();
+      if (!email) {
+        document.getElementById('trackResult').innerHTML =
+          '<p class="result bad">Please enter the email registered on your policy.</p>';
+      }
+      return email;
+    }
+    async function trackOne() {
+      const id = document.getElementById('trackId').value.trim();
+      const box = document.getElementById('trackResult');
+      const email = trackEmail();
+      if (!id || !email) return;
+      const isApp = id.toUpperCase().startsWith('APL-');
+      const url = isApp
+        ? `/api/applications/track/${encodeURIComponent(id)}?email=${encodeURIComponent(email)}`
+        : `/api/track/${encodeURIComponent(id)}?email=${encodeURIComponent(email)}`;
+      const res = await fetch(url);
+      if (!res.ok) {
+        box.innerHTML = `<p class="result bad">No ${isApp ? 'application' : 'claim'} found for that ID and email.</p>`;
+        return;
+      }
+      const data = await res.json();
+      box.innerHTML = isApp ? appCard(data) : card(data);
+    }
+
+    function appCard(a) {
+      const freq = a.payment_frequency === 'monthly' ? 'month' : 'year';
+      const pol = a.policy || {};
+      const ben = a.benefits || {};
+      return `<div class="claim-card">
+        <div class="claim-head"><span class="tref">${esc(a.tracking_id)}</span> ${badge(a.status)}</div>
+        <p style="margin:10px 0 0">${esc(a.message)}</p>
+        <dl class="kv">
+          <dt>Insurance</dt><dd>${esc(a.policy_label)}</dd>
+          <dt>${esc(a.coverage_label || 'Coverage')}</dt><dd>${money(a.coverage_amount)}</dd>
+          ${a.term_years ? `<dt>Policy term</dt><dd>${esc(a.term_years)} year(s)</dd>` : ''}
+          ${a.instalment != null ? `<dt>Premium</dt><dd><b>${money(a.instalment)}</b> / ${freq} — ${a.instalments_count} payments, total ${money(a.total_premium)}</dd>` : ''}
+          ${pol.start_date ? `<dt>Cover period</dt><dd>${esc(pol.start_date)} to ${esc(pol.end_date)}</dd>` : ''}
+          ${a.policy_number ? `<dt>Policy number</dt><dd><span class="policyno">${esc(a.policy_number)}</span></dd>` : ''}
+          ${ben.maturity_benefit ? `<dt>Maturity benefit</dt><dd><b>${money(ben.maturity_benefit)}</b> at the end of the term</dd>` : ''}
+          ${a.reason ? `<dt>Note</dt><dd>${esc(a.reason)}</dd>` : ''}
+        </dl>
+        ${ben.summary ? `<ul class="muted" style="font-size:13px">${ben.summary.map(s => `<li>${esc(s)}</li>`).join('')}</ul>` : ''}
+        ${a.policy_pdf_url ? `<a class="dl-btn" href="${esc(a.policy_pdf_url)}" target="_blank" rel="noopener">Download policy document (PDF)</a>` : ''}
+        ${a.policy_number ? `<p class="muted" style="margin:10px 0 0">Use this policy number with your email to file claims.</p>` : ''}
+      </div>`;
+    }
+
+    // ---- Apply for insurance ----
+    let PRODUCTS = {};
+    let FREQS = {};
+    async function loadProducts() {
+      const r = await fetch('/api/products');
+      const data = await r.json();
+      PRODUCTS = data.products;
+      FREQS = data.payment_frequencies;
+      const sel = document.getElementById('aType');
+      sel.innerHTML = '';
+      for (const [key, p] of Object.entries(PRODUCTS)) {
+        const opt = document.createElement('option');
+        opt.value = key; opt.textContent = p.label;
+        sel.appendChild(opt);
+      }
+      const freq = document.getElementById('aFreq');
+      freq.innerHTML = '';
+      for (const [key, label] of Object.entries(FREQS)) {
+        const opt = document.createElement('option');
+        opt.value = key; opt.textContent = label;
+        freq.appendChild(opt);
+      }
+      renderProduct();
+    }
+
+    function makeInput(field) {
+      let el;
+      if (field.type === 'select' || field.type === 'yesno') {
+        el = document.createElement('select');
+        const opts = field.type === 'yesno' ? ['no', 'yes'] : field.options;
+        for (const o of opts) {
+          const opt = document.createElement('option');
+          opt.value = o; opt.textContent = o;
+          el.appendChild(opt);
+        }
+      } else {
+        el = document.createElement('input');
+        el.type = field.type === 'number' ? 'number' : 'text';
+      }
+      el.id = 'f_' + field.name;
+      el.dataset.field = field.name;
+      el.required = !!field.required;
+      return el;
+    }
+
+    function renderProduct() {
+      const p = PRODUCTS[document.getElementById('aType').value];
+      if (!p) return;
+      document.getElementById('aTypeNote').textContent =
+        `${p.description} Coverage from ${money(p.coverage_min)} to ${money(p.coverage_max)}; deductible ${money(p.deductible)}.`;
+      document.getElementById('aCoverageLabel').textContent = p.coverage_label + ' ($)';
+      const cov = document.getElementById('aCoverage');
+      cov.min = p.coverage_min; cov.max = p.coverage_max;
+      cov.placeholder = `${p.coverage_min} - ${p.coverage_max}`;
+
+      const term = document.getElementById('aTerm');
+      term.innerHTML = '';
+      for (const t of p.terms) {
+        const opt = document.createElement('option');
+        opt.value = t; opt.textContent = t + (t === 1 ? ' year' : ' years');
+        if (t === p.default_term) opt.selected = true;
+        term.appendChild(opt);
+      }
+
+      const fields = document.getElementById('aFields');
+      fields.innerHTML = '';
+      for (const f of p.fields) {
+        const label = document.createElement('label');
+        label.htmlFor = 'f_' + f.name;
+        label.textContent = f.label + (f.required ? '' : ' (optional)');
+        fields.appendChild(label);
+        const input = makeInput(f);
+        input.addEventListener('change', refreshQuote);
+        fields.appendChild(input);
+      }
+      refreshQuote();
+
+      const docs = document.getElementById('aDocs');
+      docs.innerHTML = '';
+      for (const d of p.documents) {
+        const label = document.createElement('label');
+        label.htmlFor = 'doc_' + d.kind;
+        label.textContent = d.label + (d.required ? ' (required)' : ' (optional)');
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.id = 'doc_' + d.kind;
+        input.name = 'doc_' + d.kind;
+        input.accept = '.pdf,.png,.jpg,.jpeg,.webp,.tiff,.bmp';
+        input.required = !!d.required;
+        docs.appendChild(label);
+        docs.appendChild(input);
+      }
+    }
+    document.getElementById('aType').addEventListener('change', renderProduct);
+    ['aCoverage', 'aTerm', 'aFreq', 'aDob'].forEach(id =>
+      document.getElementById(id).addEventListener('change', refreshQuote));
+
+    let quoteTimer = null;
+    function refreshQuote() {
+      clearTimeout(quoteTimer);
+      quoteTimer = setTimeout(doQuote, 300);  // wait until the user pauses typing
+    }
+    async function doQuote() {
+      const f = document.getElementById('applyForm');
+      const coverage = parseFloat(f.coverage_amount.value);
+      const box = document.getElementById('aQuote');
+      if (!coverage) { box.classList.add('hidden'); return; }
+      const details = {};
+      f.querySelectorAll('[data-field]').forEach(el => { details[el.dataset.field] = el.value.trim(); });
+      try {
+        const res = await fetch('/api/quote', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            policy_type: f.policy_type.value, coverage_amount: coverage,
+            term_years: parseInt(f.term_years.value || '0'), payment_frequency: f.payment_frequency.value,
+            date_of_birth: f.date_of_birth.value || null, details,
+          }),
+        });
+        if (!res.ok) { box.classList.add('hidden'); return; }
+        renderQuote(await res.json());
+      } catch (e) { box.classList.add('hidden'); }
+    }
+    function renderQuote(q) {
+      const box = document.getElementById('aQuote');
+      box.classList.remove('hidden');
+      const freqLabel = q.payment_frequency_label.toLowerCase();
+      let html = `<h4>Your quote</h4>
+        <div class="big">${money(q.instalment)} <span style="font-size:14px;font-weight:400">/ ${freqLabel === 'yearly' ? 'year' : 'month'}</span></div>
+        <div class="muted">${q.instalments_count} payments over ${q.term_years} year(s) — total ${money(q.total_premium)}</div>`;
+      if (q.benefits && q.benefits.summary) {
+        html += '<ul>' + q.benefits.summary.map(s => `<li>${esc(s)}</li>`).join('') + '</ul>';
+      }
+      if (q.benefits && q.benefits.projection) {
+        html += `<table><tr><th>Year</th><th>Premiums paid</th><th>Benefit on death</th></tr>` +
+          q.benefits.projection.map(p => `<tr><td>${p.year}</td><td>${money(p.premiums_paid)}</td><td>${money(p.death_benefit)}</td></tr>`).join('') +
+          `</table><p class="muted" style="margin-top:6px">Maturity benefit at the end: <b>${money(q.benefits.maturity_benefit)}</b></p>`;
+      }
+      html += `<p class="muted" style="margin-top:8px;font-size:12px">${esc(q.note)}</p>`;
+      box.innerHTML = html;
+    }
+
+    document.getElementById('applyForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const btn = form.querySelector('button[type=submit]');
+      const box = document.getElementById('applyResult');
+      box.className = ''; box.innerHTML = '';
+      const details = {};
+      form.querySelectorAll('[data-field]').forEach(el => { details[el.dataset.field] = el.value.trim(); });
+      const fd = new FormData(form);   // personal fields, policy type, coverage, files
+      fd.append('details', JSON.stringify(details));
+      btn.disabled = true; btn.textContent = 'Checking your application...';
+      try {
+        const res = await fetch('/api/applications', { method: 'POST', body: fd });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || 'Submission failed');
+        const v = data.view;
+        const ok = v.status !== 'rejected_auto';
+        box.className = 'result ' + (ok ? 'ok' : 'bad');
+        box.innerHTML = `${esc(v.message)}<br><br>Your application ID is <span class="tref">${esc(data.tracking_id)}</span><br>
+          ${v.annual_premium != null ? `Quoted annual premium: <b>${money(v.annual_premium)}</b><br>` : ''}
+          ${v.reason ? `Reason: ${esc(v.reason)}<br>` : ''}
+          <span class="muted">Save this ID. Track it under "Track Status" with your email.
+          Once approved, your policy number appears there.</span>`;
+        if (ok) { form.reset(); renderProduct(); }
+      } catch (err) {
+        box.className = 'result bad'; box.textContent = String(err).replace('Error: ', '');
+      } finally {
+        btn.disabled = false; btn.textContent = 'Submit application';
+      }
+    };
+    async function trackCustomer() {
+      const pol = document.getElementById('trackPol').value.trim();
+      const box = document.getElementById('trackResult');
+      const email = trackEmail();
+      if (!pol || !email) return;
+      const res = await fetch(`/api/my-claims?policy_number=${encodeURIComponent(pol)}&email=${encodeURIComponent(email)}`);
+      if (!res.ok) { box.innerHTML = '<p class="result bad">We could not find a policy with that policy number and email.</p>'; return; }
+      const { claims } = await res.json();
+      box.innerHTML = claims.length ? claims.map(card).join('') : '<p class="muted">You have no claims yet.</p>';
+    }
+
+    // ---- Coverage chatbot ----
+    const chatHistory = [];
+    function addMsg(role, text) {
+      const log = document.getElementById('chatLog');
+      const d = document.createElement('div');
+      d.className = 'msg ' + role;
+      d.textContent = text;
+      log.appendChild(d);
+      log.scrollTop = log.scrollHeight;
+      return d;
+    }
+    async function sendChat() {
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      if (!message) return;
+      input.value = '';
+      addMsg('user', message);
+      const email = document.getElementById('chatEmail').value.trim();
+      const pol = document.getElementById('chatPol').value.trim();
+      const action = document.getElementById('chatAction');
+      action.textContent = '';
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message, history: chatHistory, policy_number: pol, email }),
+        });
+        const data = await res.json();
+        const bubble = addMsg('bot', data.reply);
+        if (data.covered === true || data.covered === false) {
+          const v = document.createElement('div');
+          v.className = data.covered ? 'verdict-yes' : 'verdict-no';
+          v.textContent = data.covered ? 'Covered under your policy' : 'Not covered under your policy';
+          bubble.prepend(v);
+        }
+        chatHistory.push({ role: 'user', content: message }, { role: 'assistant', content: data.reply });
+        if (data.can_file_claim && data.incident_type) {
+          const b = document.createElement('button');
+          b.className = 'primary';
+          b.style.marginTop = '0';
+          b.textContent = 'File a claim for this';
+          b.onclick = () => startClaim(email, pol, data.incident_type);
+          action.appendChild(b);
+        }
+      } catch (e) {
+        addMsg('bot', 'Sorry, something went wrong. Please try again.');
+      }
+    }
+    async function startClaim(email, pol, incident) {
+      const f = document.getElementById('claimForm');
+      f.email.value = email;
+      f.policy_number.value = pol;
+      showTab('file');
+      await filterByPolicy();
+      document.getElementById('incidentType').value = incident;
+      updateDocNote();
+    }
+    document.getElementById('chatInput').addEventListener('keydown', e => { if (e.key === 'Enter') sendChat(); });
+    addMsg('bot', 'Hi! Enter your policy number and registered email, then tell me what happened. I will check it against your policy.');
+
+    document.getElementById('claimForm').email.addEventListener('change', filterByPolicy);
+    document.getElementById('claimForm').policy_number.addEventListener('change', filterByPolicy);
+
+    // =====================================================================
+    // ADMIN TAB: passcode sign-in, then review applications and claims.
+    // The passcode is held in memory only, so reloading the page signs out.
+    // =====================================================================
+    let ADMIN_TOKEN = '';
+    const adminHeaders = () => ({ 'X-Admin-Token': ADMIN_TOKEN });
+
+    async function adminSignIn() {
+      const token = document.getElementById('adminToken').value;
+      const err = document.getElementById('adminErr');
+      err.textContent = '';
+      const res = await fetch('/api/admin/login', { headers: { 'X-Admin-Token': token } });
+      if (!res.ok) { err.textContent = 'Invalid passcode.'; return; }
+      ADMIN_TOKEN = token;
+      document.getElementById('adminToken').value = '';
+      document.getElementById('adminLogin').classList.add('hidden');
+      document.getElementById('adminConsole').classList.remove('hidden');
+      adminLoad();
+    }
+    document.getElementById('adminToken').addEventListener('keydown', e => { if (e.key === 'Enter') adminSignIn(); });
+
+    function adminSignOut() {
+      ADMIN_TOKEN = '';
+      adminDocUrls.splice(0).forEach(u => URL.revokeObjectURL(u));
+      document.getElementById('adminList').innerHTML = '';
+      document.getElementById('adminConsole').classList.add('hidden');
+      document.getElementById('adminLogin').classList.remove('hidden');
+    }
+
+    async function adminLoad() {
+      if (!ADMIN_TOKEN) return;
+      const view = document.getElementById('adminView').value;
+      const status = document.getElementById('adminFilter').value;
+      const q = status ? ('?status=' + encodeURIComponent(status)) : '';
+      const url = (view === 'applications' ? '/api/admin/applications' : '/api/admin/claims') + q;
+      const res = await fetch(url, { headers: adminHeaders() });
+      if (res.status === 401) { adminSignOut(); return; }
+      const data = await res.json();
+      const items = view === 'applications' ? data.applications : data.claims;
+      document.getElementById('adminCount').textContent =
+        items.length + (view === 'applications' ? ' application(s)' : ' claim(s)');
+      document.getElementById('adminList').innerHTML = items.length
+        ? items.map(view === 'applications' ? adminRenderApp : adminRenderClaim).join('')
+        : `<p class="muted">No ${view} in this view.</p>`;
+      adminLoadDocuments();
+    }
+
+    // Documents need the passcode header, which a plain <img src> cannot send,
+    // so fetch each one and show it from a local blob URL.
+    const adminDocUrls = [];
+    async function adminLoadDocuments() {
+      adminDocUrls.splice(0).forEach(u => URL.revokeObjectURL(u));
+      for (const slot of document.querySelectorAll('#adminList .doc-slot[data-src]')) {
+        const label = slot.dataset.label;
+        try {
+          const res = await fetch(slot.dataset.src, { headers: adminHeaders() });
+          if (!res.ok) throw new Error(res.status);
+          const blob = await res.blob();
+          const url = URL.createObjectURL(blob);
+          adminDocUrls.push(url);
+          slot.textContent = '';
+          if (blob.type.startsWith('image/')) {
+            const img = document.createElement('img');
+            img.src = url; img.alt = label; img.title = 'Click to open full size';
+            img.onclick = () => window.open(url, '_blank');
+            slot.appendChild(img);
+          }
+          const link = document.createElement('a');
+          link.href = url; link.target = '_blank'; link.rel = 'noopener';
+          link.textContent = (blob.type === 'application/pdf' ? 'Open PDF: ' : 'Open: ') + label;
+          slot.appendChild(link);
+        } catch (e) {
+          slot.textContent = `${label}: could not load (${e.message}).`;
+        }
+      }
+    }
+
+    const adminIcon = s => s === 'ok' || s === true ? '<span class="ok">✓</span>'
+      : s === 'unverified' ? '<span class="warn">?</span>' : '<span class="bad">✗</span>';
+
+    function adminDecisionBox(id, pending, approver, notes, kind) {
+      if (pending) {
+        const approveLabel = kind === 'app' ? 'Approve &amp; issue policy' : 'Approve';
+        return `<div class="actions">
+          <input id="notes-${id}" placeholder="Decision notes (shown to the customer)" aria-label="Decision notes" />
+          <button type="button" class="approve" onclick="adminDecide('${kind}', '${id}', true)">${approveLabel}</button>
+          <button type="button" class="reject" onclick="adminDecide('${kind}', '${id}', false)">Reject</button>
+        </div>`;
+      }
+      return approver ? `<p class="muted" style="margin-top:10px">Decided by ${esc(approver)}${notes ? ' — ' + esc(notes) : ''}</p>` : '';
+    }
+
+    function adminRenderApp(a) {
+      const id = esc(a.application_id);
+      const pr = a.pricing_result || {};
+      const el = a.eligibility_result || {};
+      const ver = Array.isArray(a.verification_result) ? a.verification_result : [];
+      const docs = Array.isArray(a.documents) ? a.documents : [];
+      const details = a.details || {};
+      const risk = ['low', 'medium', 'high'].includes(a.risk_level) ? a.risk_level : '';
+      const plan = pr.instalment != null
+        ? `${money(pr.instalment)} ${esc((pr.payment_frequency_label || '').toLowerCase())} × ${esc(pr.instalments_count)} (total ${money(pr.total_premium)}) over ${esc(pr.term_years)} year(s)`
+        : `${money(a.annual_premium)} / year`;
+      return `<div class="claim-card">
+        <div class="claim-head">
+          <div><strong>${id}</strong> &nbsp; <span class="muted">${esc(a.tracking_id)}</span> — ${esc(a.full_name)}</div>
+          ${badge(a.status)}
+        </div>
+        <dl class="kv">
+          <dt>Insurance</dt><dd>${esc(a.policy_type)} — coverage ${money(a.coverage_amount)}</dd>
+          <dt>Email / phone</dt><dd>${esc(a.email)} / ${esc(a.phone)}</dd>
+          <dt>Date of birth</dt><dd>${esc(a.date_of_birth)}</dd>
+          <dt>Address</dt><dd>${esc(a.address)}</dd>
+          ${Object.entries(details).map(([k, v]) => `<dt>${esc(k.replace(/_/g, ' '))}</dt><dd>${esc(v || '-')}</dd>`).join('')}
+          <dt>Quoted plan</dt><dd><strong>${plan}</strong></dd>
+          <dt>Risk</dt><dd class="risk-${risk}">${esc((a.risk_level || '-').toUpperCase())} (score ${esc(pr.risk_score ?? '-')})</dd>
+          ${a.issued_policy_number ? `<dt>Issued policy</dt><dd><strong>${esc(a.issued_policy_number)}</strong> (customer ${esc(a.issued_customer_id)})</dd>` : ''}
+        </dl>
+        <div class="section-title">Eligibility rules</div>
+        <div class="box chk">${(el.checks || []).map(c => `${adminIcon(c.passed)}<span><b>${esc(c.rule)}</b> — ${esc(c.detail)}</span>`).join('') || '<span></span><span>n/a</span>'}</div>
+        ${ver.length ? `<div class="section-title">Document checks</div>
+        <div class="box chk">${ver.map(v => `${adminIcon(v.status)}<span><b>${esc(v.document)}</b> · ${esc(v.check)} — ${esc(v.detail)}</span>`).join('')}</div>` : ''}
+        ${(pr.factors || []).length ? `<div class="section-title">Premium factors</div>
+        <div class="box">${pr.factors.map(f => `${esc(f.factor)} ×${esc(f.multiplier)}`).join('<br>')}</div>` : ''}
+        ${docs.length ? `<div class="section-title">Documents</div>
+        <div class="docs">${docs.map((d, i) => `<div class="doc-slot" data-src="/api/admin/applications/${encodeURIComponent(a.application_id)}/documents/${i}" data-label="${esc(d.label)}">Loading ${esc(d.label)}...</div>`).join('')}</div>` : ''}
+        ${a.agent_summary ? `<div class="section-title">Agent notes</div><div class="box trail">${esc(a.agent_summary)}</div>` : ''}
+        ${adminDecisionBox(id, a.status === 'pending_approval', a.approver, a.approval_notes, 'app')}
+      </div>`;
+    }
+
+    function adminRenderClaim(c) {
+      const cov = c.coverage_result || {};
+      const fr = c.fraud_result || {};
+      const covClass = cov.covered === true ? 'cov-yes' : cov.covered === false ? 'cov-no' : 'muted';
+      const covText = cov.covered === true ? 'COVERED' : cov.covered === false ? 'NOT COVERED' : 'UNDETERMINED';
+      const id = esc(c.claim_id);
+      const risk = ['low', 'medium', 'high'].includes(fr.risk) ? fr.risk : '';
+      return `<div class="claim-card">
+        <div class="claim-head">
+          <div><strong>${id}</strong> &nbsp; <span class="muted">${esc(c.tracking_id)}</span> — ${esc(c.claimant_name)}</div>
+          ${badge(c.status)}
+        </div>
+        <dl class="kv">
+          <dt>Customer / Policy</dt><dd>${esc(c.customer_id || '-')} / ${esc(c.policy_number || '-')}</dd>
+          <dt>Incident</dt><dd>${esc(c.incident_type || '-')} on ${esc(c.incident_date || '-')}</dd>
+          <dt>Claimed</dt><dd>${money(c.claimed_amount)}</dd>
+          <dt>Assessed payout</dt><dd><strong>${money(c.assessed_amount)}</strong></dd>
+          <dt>Fraud risk</dt><dd class="risk-${risk}">${esc((fr.risk || '-').toUpperCase())} (score ${esc(c.fraud_score ?? '-')})</dd>
+        </dl>
+        <div class="section-title">Policy coverage decision</div>
+        <div class="box"><span class="${covClass}">${covText}</span> — ${esc(cov.reasoning || 'n/a')}</div>
+        ${fr.flags && fr.flags.length ? `<div class="section-title">Fraud flags</div><div class="box">${fr.flags.map(esc).join('<br>')}</div>` : ''}
+        ${c.document_path ? `<div class="section-title">Uploaded document</div>
+        <div class="docs"><div class="doc-slot" data-src="/api/admin/claims/${encodeURIComponent(c.claim_id)}/document" data-label="Claim document">Loading document...</div></div>` : ''}
+        ${c.agent_summary ? `<div class="section-title">Agent decision trail</div><div class="box trail">${esc(c.agent_summary)}</div>` : ''}
+        ${adminDecisionBox(id, c.status === 'pending_approval', c.approver, c.approval_notes, 'claim')}
+      </div>`;
+    }
+
+    async function adminDecide(kind, id, approved) {
+      const notes = (document.getElementById('notes-' + id) || {}).value || '';
+      const fd = new FormData();
+      fd.append('approved', approved);
+      fd.append('approver', 'admin');
+      fd.append('notes', notes);
+      const base = kind === 'app' ? '/api/admin/applications/' : '/api/admin/claims/';
+      const res = await fetch(base + encodeURIComponent(id) + '/decision', {
+        method: 'POST', headers: adminHeaders(), body: fd,
+      });
+      const data = await res.json();
+      if (res.status === 401) { adminSignOut(); return; }
+      if (!res.ok) { alert('Error: ' + (data.detail || res.status)); return; }
+      if (data.policy_number) alert(`Policy ${data.policy_number} issued to customer ${data.customer_id}.`);
+      adminLoad();
+    }
+
+    loadReqs();
+    loadProducts();
+    // Open a screen from the URL, e.g. /#/file or /#/track (/admin -> /#/admin).
+    // The "#/" form never matches an element id, so the browser does not jump
+    // down the page the way a plain "#chat" would.
+    const startTab = location.hash.replace(/^#\/?/, '');
+    if (TABS.includes(startTab)) showTab(startTab);
+  </script>
+</body>
+</html>
