@@ -14,13 +14,19 @@ load_dotenv()
 
 # --- Paths -----------------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent
-DB_PATH = BASE_DIR / "claims.db"
-UPLOAD_DIR = BASE_DIR / "uploads"
+# Where the database and uploaded files live. Locally this is the project
+# folder; set DATA_DIR to keep them elsewhere (e.g. a persistent volume).
+DATA_DIR = Path(os.getenv("DATA_DIR") or BASE_DIR).resolve()
+DB_PATH = DATA_DIR / "claims.db"
+UPLOAD_DIR = DATA_DIR / "uploads"
 SAMPLE_DOCS_DIR = BASE_DIR / "sample_docs"
 FRONTEND_DIR = BASE_DIR / "frontend"
 
-UPLOAD_DIR.mkdir(exist_ok=True)
-SAMPLE_DOCS_DIR.mkdir(exist_ok=True)
+for _dir in (UPLOAD_DIR, SAMPLE_DOCS_DIR):
+    try:
+        _dir.mkdir(parents=True, exist_ok=True)
+    except OSError:
+        pass  # read-only code folder (e.g. on AgentCore Runtime)
 
 # --- OpenAI ----------------------------------------------------------------
 # Accept either name so an existing OPEN_AI_KEY (from the original notebook)

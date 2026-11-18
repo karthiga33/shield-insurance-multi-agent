@@ -29,6 +29,7 @@ from typing import Any, Dict, List, Optional, TypedDict
 
 from langgraph.graph import END, StateGraph
 
+import agentcore_client
 import config
 import database as db
 import llm
@@ -67,12 +68,14 @@ def _narrate(step: str, facts: Dict[str, Any]) -> str:
     """Optional LLM narration of a step. Falls back to a plain summary."""
     if not llm.is_available():
         return f"{step}: {facts}"
+    prompt = (
+        f"You are a claims analyst. In one or two sentences, summarize "
+        f"this '{step}' result for an internal review note:\n{facts}"
+    )
     try:
-        return llm.complete(
-            f"You are a claims analyst. In one or two sentences, summarize "
-            f"this '{step}' result for an internal review note:\n{facts}",
-            max_tokens=300,
-        )
+        if agentcore_client.enabled():
+            return agentcore_client.narrate(prompt, max_tokens=300)
+        return llm.complete(prompt, max_tokens=300)
     except Exception as exc:
         return f"{step}: {facts} (narration unavailable: {type(exc).__name__})"
 

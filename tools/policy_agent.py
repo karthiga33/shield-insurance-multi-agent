@@ -14,6 +14,7 @@ from __future__ import annotations
 import json
 from typing import Any, Dict
 
+import agentcore_client
 import config
 import database as db
 import llm
@@ -99,6 +100,17 @@ def decide_coverage(claim: Dict[str, Any]) -> Dict[str, Any]:
 def _llm_decide(
     policy_doc: str, policy_type: str, incident_type: str, claim: Dict[str, Any]
 ) -> Dict[str, Any]:
+    if agentcore_client.enabled():
+        # The hosted agent holds its own copy of the policy documents.
+        try:
+            data = agentcore_client.coverage_decision(policy_type, incident_type, claim)
+            return {
+                "covered": bool(data.get("covered")) if data.get("covered") is not None else None,
+                "reasoning": str(data.get("reasoning") or "").strip(),
+            }
+        except Exception as exc:
+            print(f"[agentcore] coverage_decision failed, using rules: {exc}")
+            return {"covered": None, "reasoning": ""}
     prompt = (
         "You are an insurance coverage analyst. Using ONLY the policy document "
         "below, decide whether the claimed incident is covered. Cite the relevant "

@@ -23,6 +23,7 @@ import threading
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+import agentcore_client
 import config
 import llm
 import policy_rules
@@ -211,6 +212,12 @@ def analyze_document(path: str, schema: Optional[Dict[str, str]] = None) -> Dict
 
     `schema` selects which fields to extract (claim fields by default).
     """
+    if agentcore_client.enabled():
+        try:
+            return agentcore_client.analyze_document(path, schema)
+        except Exception as exc:
+            # Keep the claim moving: read the document locally instead.
+            print(f"[agentcore] analyze_document failed, reading locally: {exc}")
     kind = classify_document(path)
     raw_text = ""
     doc_type = kind

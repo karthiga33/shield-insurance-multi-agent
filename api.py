@@ -574,6 +574,17 @@ async def admin_decide_application(
 # ===========================================================================
 # FRONTEND ROUTES
 # ===========================================================================
+@app.get("/health")
+async def health():
+    """Load-balancer health check: the app is up and the database answers."""
+    conn = db.connect()
+    try:
+        conn.execute("SELECT 1").fetchone()
+    finally:
+        conn.close()
+    return {"status": "ok"}
+
+
 @app.get("/")
 async def user_portal():
     return FileResponse(str(config.FRONTEND_DIR / "user.html"))

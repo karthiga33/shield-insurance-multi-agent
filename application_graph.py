@@ -20,6 +20,7 @@ from typing import Any, Dict, List, TypedDict
 
 from langgraph.graph import END, StateGraph
 
+import agentcore_client
 import database as db
 import llm
 import underwriting_rules as uw
@@ -49,13 +50,15 @@ def _narrate(facts: Dict[str, Any]) -> str:
     """Short underwriter-style note from the model; plain fallback if unavailable."""
     if not llm.is_available():
         return ""
+    prompt = (
+        "You are an insurance underwriter. In two or three sentences, summarize "
+        "this application review for the approving manager. Mention any "
+        f"document mismatches and the main risk factors:\n{facts}"
+    )
     try:
-        return llm.complete(
-            "You are an insurance underwriter. In two or three sentences, summarize "
-            "this application review for the approving manager. Mention any "
-            f"document mismatches and the main risk factors:\n{facts}",
-            max_tokens=300,
-        )
+        if agentcore_client.enabled():
+            return agentcore_client.narrate(prompt, max_tokens=300)
+        return llm.complete(prompt, max_tokens=300)
     except Exception:
         return ""
 

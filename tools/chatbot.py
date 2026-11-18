@@ -16,6 +16,7 @@ from __future__ import annotations
 import json
 from typing import Any, Dict, List, Optional
 
+import agentcore_client
 import config
 import database as db
 import llm
@@ -162,6 +163,9 @@ def _llm_reply(
     detected_incident: Optional[str],
 ) -> Dict[str, Any]:
     ptype = policy["policy_type"]
+    if agentcore_client.enabled():
+        # Hosted on AgentCore; errors fall back to the rule-based reply in chat().
+        return agentcore_client.chat_reply(message, history, ptype, detected_incident)
     policy_doc = policy_rules.load_policy_document(ptype) or ""
     allowed = policy_rules.incident_types_for_policy(ptype)
 

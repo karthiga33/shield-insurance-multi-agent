@@ -251,6 +251,7 @@ Open <http://127.0.0.1:8000>.
 | `OPENAI_API_KEY` | Only if `LLM_PROVIDER=openai` |
 | `ADMIN_TOKEN` | Admin passcode. Defaults to `admin123` — **change it** before sharing the app |
 | `TESSERACT_CMD` | Only if Tesseract is installed somewhere unusual |
+| `AGENTCORE_RUNTIME_ARN` | Optional. Runs the AI agents on Bedrock AgentCore Runtime (see below). Empty = run locally |
 
 **AWS Bedrock access:** the IAM user needs Bedrock invoke permission (for
 example `AmazonBedrockFullAccess` while testing), and the account must be
@@ -285,7 +286,7 @@ Running it again **resets** the sample data. Example:
 
 ## Security notes
 
-- `.env`, the database and uploaded files are excluded from Git.
+- `.env`, the database and uploaded files are excluded from Git, and from the AgentCore upload.
 - Customers can only see their own applications and claims (policy number +
   registered email); a wrong pair gets the same "not found" reply as a missing
   record, so the app never reveals that someone else's policy exists.
@@ -299,9 +300,59 @@ Running it again **resets** the sample data. Example:
 
 ---
 
+## Hosting the agents on Amazon Bedrock AgentCore Runtime
+
+The AI agents can run on [AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-get-started-cli.html),
+a managed, serverless host for agents. Each call runs in an isolated session
+and is billed only while it runs. AgentCore accepts only signed AWS calls
+(SigV4 or JWT) and keeps no state between sessions, so the website, API, rules
+and SQLite database stay with `api.py`, and only the AI steps are hosted.
+
+```mermaid
+flowchart LR
+    B[Browser] --> API["api.py<br/>website · rules · SQLite · uploads"]
+    API -- "InvokeAgentRuntime (SigV4)" --> RT
+    subgraph AWS["AWS · us-east-1"]
+      RT["AgentCore Runtime<br/>ShieldAgents"] --> NP[Bedrock Nova Pro]
+      RT --> CW[CloudWatch logs & traces]
+    end
+```
+
+| Action (`POST /invocations`) | Payload | Used by |
+|---|---|---|
+| `analyze_document` | `filename`, `content_b64`, optional `schema` | Claims and underwriting document reading |
+| `coverage_decision` | `policy_type`, `incident_type`, `claim` | Claims policy-coverage step |
+| `chat` | `message`, `history`, `policy_type`, `detected_incident` | Coverage Assistant |
+| `narrate` | `prompt`, `max_tokens` | Review notes for the approver |
+
+Files:
+
+- `agentcore_runtime.py`: the hosted entrypoint (`BedrockAgentCoreApp`, `/invocations` + `/ping` on port 8080).
+- `agentcore_client.py`: what `api.py` uses to call it. It's active only when `AGENTCORE_RUNTIME_ARN` is set. If a hosted call fails, that step falls back to local code or the rules.
+- `ShieldAgents/`: the [AgentCore CLI](https://github.com/aws/agentcore-cli) project (CodeZip build, so no Docker is needed). `sync_agent_code.py` copies only the agent modules and policy documents into it. `.env`, the database and uploads are never uploaded.
+
+Deploy (needs Node.js 20+, uv, and AWS credentials that can create IAM roles and CloudFormation stacks):
+
+```bash
+npm install -g @aws/agentcore
+cd ShieldAgents
+python sync_agent_code.py
+agentcore deploy                 # first run also bootstraps CDK in the account
+agentcore status                 # copy the runtime ARN into .env as AGENTCORE_RUNTIME_ARN
+agentcore invoke --runtime agent --payload '{"action":"narrate","prompt":"Say hello"}'
+agentcore logs runtime --since 30m
+```
+
+The deploy creates the `CDKToolkit` bootstrap stack and the
+`AgentCore-ShieldAgents-default` stack. That stack contains the runtime and its
+execution role, which may only call Bedrock models and write logs. To tear it
+down: `agentcore remove all --yes` then `agentcore deploy --yes`.
+
+---
+
 ## Roadmap
 
-- Host on AWS (Bedrock AgentCore Runtime / container), with uploads in S3 and
-  the database on a managed service instead of SQLite.
+- Move uploads to S3 and the database to a managed service, so the website can
+  be hosted too.
 - Proper staff accounts instead of a shared passcode.
 - Email notifications when an application or claim is decided.

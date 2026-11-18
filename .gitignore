@@ -15,13 +15,17 @@ claims.db
 uploads/*
 !uploads/.gitkeep
 
-# Temporary files from local testing
-_*.log
-_*.json
-_*.txt
-_*.py
-_*.png
+# Temporary files from local testing (root and infra/ only, so package files
+# like tools/__init__.py are NOT ignored)
+/_*
+/infra/_*
 _shot_profile/
+
+# AWS CDK
+infra/.venv/
+infra/cdk.out/
+infra/cdk.context.json
+infra/.origin-secret
 
 # Editors / OS
 .vscode/
